@@ -181,7 +181,6 @@
            (dio-output-svg
             (file-name-with-extension
              (concat (file-name-sans-extension dio-output) "-" dio-page) "svg"))
-           (dio-output-pdf (file-name-with-extension dio-output-svg "pdf"))
            ;; create output dir if non exist
            (_ (when (not (file-exists-p dio-output-dir))
                 (make-directory dio-output-dir)))
@@ -190,11 +189,7 @@
                            " -x "
                            (when org-drawio-crop " --crop ")
                            dio-input-dir "/" dio-input " -p " dio-page
-                           " -o " dio-output-dir "/" dio-output-pdf " >/dev/null 2>&1 && "
-                           (or org-drawio-command-pdf2svg
-                               " pdf2svg ")
-                           dio-output-dir "/" dio-output-pdf " "
-                           dio-output-dir "/" dio-output-svg " >/dev/null 2>&1")))
+                           " -o " dio-output-dir "/" dio-output-svg " >/dev/null 2>&1 && ")))
       ;; skip #+caption, #+name of image
       (if (org-next-line-empty-p)
           (progn (end-of-line) (insert-char ?\n))
@@ -206,7 +201,6 @@
         (kill-whole-line 0))
       (insert (concat "[[file:" dio-output-dir "/" dio-output-svg "]]"))
       ;; trash pdf file
-      (delete-file (concat dio-output-dir "/" dio-output-pdf) t)
       (org-display-inline-images))))
 
 ;;;###autoload
